@@ -39,7 +39,7 @@ def main():
                 location = pygame.mouse.get_pos()
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
-                if sqSelected == (row, col):
+                if sqSelected == (row, col) and False: # change later
                     sqSelected = ()
                     playerClicks = []
                 else:
@@ -51,8 +51,10 @@ def main():
                     if move in validMoves:
                         gs.makeMove(move)
                         moveMade = True
-                    sqSelected = ()
-                    playerClicks = []
+                        sqSelected = ()
+                        playerClicks = []
+                    else:
+                        playerClicks = [sqSelected]
 
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_z:
