@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import pygame.time
 
@@ -74,7 +76,7 @@ def drawGameState(screen, gs):
 
 
 def drawBoard(screen):
-    colors = [pygame.Color("white"), pygame.Color("grey")]
+    colors = [pygame.Color("#ebecd1"), pygame.Color("#779557")]
     for r in range(DIMENSION):
         for c in range(DIMENSION):
             color = colors[(r + c) % 2 == 0]
