@@ -41,7 +41,7 @@ def main():
                 location = pygame.mouse.get_pos()
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
-                if sqSelected == (row, col) and False: # change later
+                if sqSelected == (row, col) and False:  # change later
                     sqSelected = ()
                     playerClicks = []
                 else:
