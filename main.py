@@ -5,16 +5,19 @@ import ChessEngine
 
 WIDTH = HEIGHT = 512
 DIMENSION = 8
-SQ_SIZE = HEIGHT//DIMENSION
+SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
 IMAGES = {
 
 }
 
+
 def load_images():
-    pieces = ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR", "bP", "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR", "wP"]
+    pieces = ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR", "bP", "wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR",
+              "wP"]
     for piece in pieces:
         IMAGES[piece] = pygame.transform.scale(pygame.image.load(f"images/{piece}.png"), (SQ_SIZE, SQ_SIZE))
+
 
 def main():
     pygame.init()
@@ -34,8 +37,8 @@ def main():
                 running = False
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 location = pygame.mouse.get_pos()
-                col = location[0]//SQ_SIZE
-                row = location[1]//SQ_SIZE
+                col = location[0] // SQ_SIZE
+                row = location[1] // SQ_SIZE
                 if sqSelected == (row, col):
                     sqSelected = ()
                     playerClicks = []
@@ -51,7 +54,6 @@ def main():
                     sqSelected = ()
                     playerClicks = []
 
-
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_z:
                     gs.undoMove()
@@ -64,17 +66,17 @@ def main():
         pygame.display.flip()
 
 
-
 def drawGameState(screen, gs):
     drawBoard(screen)
     drawPieces(screen, gs.board)
+
 
 def drawBoard(screen):
     colors = [pygame.Color("white"), pygame.Color("grey")]
     for r in range(DIMENSION):
         for c in range(DIMENSION):
             color = colors[(r + c) % 2 == 0]
-            pygame.draw.rect(screen, color, pygame.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+            pygame.draw.rect(screen, color, pygame.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 def drawPieces(screen, board):
@@ -82,6 +84,7 @@ def drawPieces(screen, board):
         for c in range(DIMENSION):
             piece = board[r][c]
             if piece != "--":
-                screen.blit(IMAGES[piece], pygame.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+                screen.blit(IMAGES[piece], pygame.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
 
 main()

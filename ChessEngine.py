@@ -1,6 +1,3 @@
-from turtledemo.penrose import start
-
-
 class GameState:
     def __init__(self):
         self.board = [
@@ -26,16 +23,18 @@ class GameState:
         self.moveLog = []
 
     def makeMove(self, move):
-        self.board[move.startRow][move.startCol] =  "--"
+        self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.pieceMoved
         self.moveLog.append(move)
         self.whiteToMove = not self.whiteToMove
+
     def undoMove(self):
         if len(self.moveLog) != 0:
             move = self.moveLog.pop()
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
+
     def getValidMoves(self):
         return self.getAllPossibleMoves()
 
@@ -51,34 +50,39 @@ class GameState:
 
     def getPawnMoves(self, r, c, moves):
         if self.whiteToMove:
-            if self.board[r-1][c] == "--":
-                moves.append(Move((r, c), (r-1, c), self.board))
-                if r== 6 and self.board[r-2][c] == "--":
-                    moves.append(Move((r, c), (r-2, c), self.board))
+            if self.board[r - 1][c] == "--":
+                moves.append(Move((r, c), (r - 1, c), self.board))
+                if r == 6 and self.board[r - 2][c] == "--":
+                    moves.append(Move((r, c), (r - 2, c), self.board))
                 if (c - 1) >= 0:
-                    if  self.board[r-1][c-1][0] == "b":
-                        moves.append(Move((r, c), (r-1, c-1), self.board))
+                    if self.board[r - 1][c - 1][0] == "b":
+                        moves.append(Move((r, c), (r - 1, c - 1), self.board))
                 if (c + 1) < len(self.board[r]):
                     if self.board[r - 1][c + 1][0] == "b":
-                        moves.append(Move((r, c), (r-1, c+1), self.board))
+                        moves.append(Move((r, c), (r - 1, c + 1), self.board))
             else:
                 pass
 
     def getRookMoves(self, r, c, moves):
         pass
+
     def getKnightMoves(self, r, c, moves):
         pass
+
     def getBishopMoves(self, r, c, moves):
         pass
+
     def getQueenMoves(self, r, c, moves):
         pass
+
     def getKingMoves(self, r, c, moves):
         pass
-class Move:
 
-    ranksToRows = {"1": 7, "2":6, "3":5, "4":4, "5":3, "6":2, "7":1, "8":0}
+
+class Move:
+    ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {v: k for k, v in ranksToRows.items()}
-    filesToCols = {"a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7}
+    filesToCols = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
     colsToFiles = {v: k for k, v in filesToCols.items()}
 
     def __init__(self, startSq, endSq, board):
@@ -89,6 +93,7 @@ class Move:
         self.pieceMoved = board[self.startRow][self.startCol]
         self.pieceCaptured = board[self.endRow][self.endCol]
         self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
+
     def __eq__(self, other):
         if isinstance(other, Move):
             return self.moveID == other.moveID
@@ -98,4 +103,3 @@ class Move:
 
     def getRankFile(self, r, c):
         return self.colsToFiles[c] + self.rowsToRanks[r]
-
