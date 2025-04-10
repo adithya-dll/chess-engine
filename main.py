@@ -68,9 +68,10 @@ def main():
             validMoves = gs.getValidMoves()
             moveMade = False
 
+
         moves = gs.getValidMoves()
-        if moves:
-            gs.makeMove(random.choice(moves))
+        # if moves:
+        #     gs.makeMove(random.choice(moves))
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pygame.display.flip()

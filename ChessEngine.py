@@ -98,8 +98,9 @@ class GameState:
                         if validSquare[0] == checkRow and validSquare[1] == checkCol:
                             break
                 for i in range(len(moves) - 1, -1, -1):
-                    if (moves[i].endRow, moves[i].endCol) not in validSquares:
-                        moves.remove(moves[i])
+                    if moves[i].pieceMoved[1] != "K":
+                        if not (moves[i].endRow, moves[i].endCol) in validSquares:
+                            moves.remove(moves[i])
             else:
                 self.getKingMoves(kingRow, kingCol, moves)
         else:
