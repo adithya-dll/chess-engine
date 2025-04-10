@@ -9,9 +9,7 @@ WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
-IMAGES = {
-
-}
+IMAGES = {}
 
 
 def load_images():
