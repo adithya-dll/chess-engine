@@ -25,7 +25,7 @@ class GameState:
         self.whiteToMove = True
         self.moveLog = []
 
-        self.whiteKingLocation = (7, 3)
+        self.whiteKingLocation = (7, 4)
         self.blackKingLocation = (0, 4)
         self.checkMate = False
         self.staleMate = False
@@ -81,7 +81,7 @@ class GameState:
         else:
             kingRow, kingCol = self.blackKingLocation
         if self.inCheck:
-            print("check")
+            print("check", self.whiteToMove)
             if len(self.checks) == 1:
                 moves = self.getAllPossibleMoves()
                 check = self.checks[0]

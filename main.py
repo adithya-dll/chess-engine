@@ -22,6 +22,9 @@ def load_images():
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    icon = pygame.image.load("./images/bK.png")
+    pygame.display.set_icon(icon)
+    pygame.display.set_caption("Chess Engine")
     clock = pygame.time.Clock()
     screen.fill(pygame.Color("white"))
     gs = ChessEngine.GameState()
@@ -64,6 +67,10 @@ def main():
         if moveMade:
             validMoves = gs.getValidMoves()
             moveMade = False
+
+        moves = gs.getValidMoves()
+        if moves:
+            gs.makeMove(random.choice(moves))
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pygame.display.flip()
