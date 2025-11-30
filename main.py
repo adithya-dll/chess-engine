@@ -35,13 +35,14 @@ def main():
     playerClicks = []
     playerOne = True
     playerTwo = False
+    gameOver = False
     while running:
         humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 running = False
             elif e.type == pygame.MOUSEBUTTONDOWN:
-                if humanTurn:
+                if not gameOver and humanTurn:
                     location = pygame.mouse.get_pos()
                     col = location[0] // SQ_SIZE
                     row = location[1] // SQ_SIZE
@@ -67,11 +68,15 @@ def main():
                     gs.undoMove()
                     moveMade = True
                     validMoves = gs.getValidMoves()
+                    gameOver = False
 
-        if not humanTurn and not gs.checkMate and not gs.staleMate:
+        if not gameOver and not humanTurn:
             move = ChessAI.findBestMove(gs, validMoves)
-            gs.makeMove(move)
-            moveMade = True
+            if move is None:
+                gs.checkMate = True
+            else:
+                gs.makeMove(move)
+                moveMade = True
 
         if moveMade:
             validMoves = gs.getValidMoves()
@@ -80,6 +85,17 @@ def main():
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pygame.display.flip()
+
+        if gs.checkMate or gs.staleMate:
+            gameOver = True
+            if gs.staleMate:
+                text = "Stalemate"
+            elif gs.whiteToMove:
+                text = "Black wins by checkmate"
+            else:
+                text = "White wins by checkmate"
+            print(text)
+            running = False
 
 
 def drawGameState(screen, gs):
