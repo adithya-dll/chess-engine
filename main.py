@@ -1,14 +1,13 @@
-import random
-
 import pygame
 import pygame.time
 
 import ChessEngine
+import ChessAI
 
 WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
-MAX_FPS = 15
+MAX_FPS = 60
 IMAGES = {}
 
 
@@ -34,44 +33,50 @@ def main():
     running = True
     sqSelected = ()
     playerClicks = []
+    playerOne = True
+    playerTwo = False
     while running:
+        humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 running = False
             elif e.type == pygame.MOUSEBUTTONDOWN:
-                location = pygame.mouse.get_pos()
-                col = location[0] // SQ_SIZE
-                row = location[1] // SQ_SIZE
-                if sqSelected == (row, col) and False:  # change later
-                    sqSelected = ()
-                    playerClicks = []
-                else:
-                    sqSelected = (row, col)
-                    playerClicks.append(sqSelected)
-                if len(playerClicks) == 2:
-                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    print(move.getChessNotation())
-                    for i in range(len(validMoves)):
-                        if validMoves[i] == move:
-                            gs.makeMove(validMoves[i])
-                            moveMade = True
-                            sqSelected = ()
-                            playerClicks = []
-                    if not moveMade:
-                        playerClicks = [sqSelected]
+                if humanTurn:
+                    location = pygame.mouse.get_pos()
+                    col = location[0] // SQ_SIZE
+                    row = location[1] // SQ_SIZE
+                    if sqSelected == (row, col) and False:  # change later
+                        sqSelected = ()
+                        playerClicks = []
+                    else:
+                        sqSelected = (row, col)
+                        playerClicks.append(sqSelected)
+                    if len(playerClicks) == 2:
+                        move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
+                        for i in range(len(validMoves)):
+                            if validMoves[i] == move:
+                                gs.makeMove(validMoves[i])
+                                moveMade = True
+                                sqSelected = ()
+                                playerClicks = []
+                        if not moveMade:
+                            playerClicks = [sqSelected]
 
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_z:
                     gs.undoMove()
                     moveMade = True
+                    validMoves = gs.getValidMoves()
+
+        if not humanTurn and not gs.checkMate and not gs.staleMate:
+            move = ChessAI.findBestMove(gs, validMoves)
+            gs.makeMove(move)
+            moveMade = True
+
         if moveMade:
             validMoves = gs.getValidMoves()
             moveMade = False
 
-
-        moves = gs.getValidMoves()
-        # if moves:
-        #     gs.makeMove(random.choice(moves))
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pygame.display.flip()
